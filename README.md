@@ -34,7 +34,16 @@ Checking whether a move completes a box is **O(1)**: a line touches at most
 2 boxes, and each box needs 4 lookups.
 
 ## Alpine VM auto-start
-Inside the VM as root, from this folder: `sh alpine-setup.sh`, then `reboot`.
+Tested on Alpine Linux 3.24 (VirtualBox, installed to disk with `setup-alpine`).
+A fresh Alpine has no git, so install it first. Inside the VM as root:
+```sh
+apk add git
+git clone <repo-url> DotsAndBoxes
+cd DotsAndBoxes
+sh alpine-setup.sh
+reboot
+```
 The script replaces the `tty1` login line in `/etc/inittab` with the game,
-so the game shows directly at boot (no username/password). Backup is kept at
-`/etc/inittab.bak`.
+so the game shows directly at boot (no username/password). After "Play again? n"
+init restarts the game. For a shell, press Alt+F2 and log in as root.
+Backup is kept at `/etc/inittab.bak` (undo: `cp /etc/inittab.bak /etc/inittab`).
