@@ -1,4 +1,4 @@
-# Dots and Boxes — CMPS 270 Project (Sprint 1)
+# Dots and Boxes — CMPS 241 Project (Sprint 1)
 
 Two-player console Dots and Boxes in C, 4x5 boxes (5x6 dots).
 
