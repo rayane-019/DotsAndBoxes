@@ -1,7 +1,7 @@
 CC      = gcc
 CFLAGS  = -Wall -Wextra -std=c99 -g
 TARGET  = dotsboxes
-OBJS    = main.o game.o board.o display.o
+OBJS    = main.o game.o board.o display.o bot.o
 PREFIX  = /usr/local
 
 all: $(TARGET)
@@ -31,3 +31,6 @@ clean:
 	rm -f $(OBJS) $(TARGET)
 
 .PHONY: all install valgrind clean
+
+bot.o: bot.c bot.h board.h
+game.o: bot.h
