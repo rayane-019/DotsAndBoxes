@@ -1,11 +1,29 @@
 #include <stdio.h>
+#include <string.h>
 #include "game.h"
+
+/* Reads one line into buf.
+ * Returns 1 if the line fits, 0 if it was too long (the rest is thrown away),
+ * -1 if input ended (EOF). */
+static int read_line(char *buf, int size)
+{
+    int ch;
+
+    if (fgets(buf, size, stdin) == NULL)
+        return -1;
+    if (strchr(buf, '\n') != NULL || feof(stdin))
+        return 1;
+    while ((ch = getchar()) != '\n' && ch != EOF)   /* throw away the rest */
+        ;
+    return 0;
+}
 
 /* Asks the player to choose a mode.
  * Returns 0 for two players, 1 for playing against the bot, -1 if input ended. */
 static int ask_mode(void)
 {
     char line[16];
+    int status;
 
     for (;;) {
         printf("\nChoose a mode:\n");
@@ -14,11 +32,12 @@ static int ask_mode(void)
         printf("Your choice: ");
         fflush(stdout);
 
-        if (fgets(line, sizeof line, stdin) == NULL)
+        status = read_line(line, sizeof line);
+        if (status == -1)
             return -1;
-        if (line[0] == '1' && (line[1] == '\n' || line[1] == '\0'))
+        if (status == 1 && line[0] == '1' && (line[1] == '\n' || line[1] == '\0'))
             return 0;
-        if (line[0] == '2' && (line[1] == '\n' || line[1] == '\0'))
+        if (status == 1 && line[0] == '2' && (line[1] == '\n' || line[1] == '\0'))
             return 1;
         printf("Please type 1 or 2.\n");
     }
@@ -43,7 +62,7 @@ int main(void)
 
         printf("\nPlay again? (y/n): ");
         fflush(stdout);
-        if (fgets(line, sizeof line, stdin) == NULL)
+        if (read_line(line, sizeof line) == -1)
             return 0;
         if (line[0] != 'y' && line[0] != 'Y')
             break;
